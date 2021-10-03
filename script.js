@@ -153,6 +153,7 @@ class App {
     form.style.display = 'none';
     form.classList.add('hidden');
 
+    // To fix the animation when the form dosappears.
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
   _toggleElavationField() {
@@ -162,19 +163,17 @@ class App {
   _newWorkout(e) {
     e.preventDefault();
 
-    const validInputs = (...inputs) =>
-      inputs.every(inp => Number.isFinite(inp));
-    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
-
+    // Get data from form
     const type = inputType.value;
     const distance = +inputDistance.value;
     const duration = +inputDuration.value;
     const { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
-    // Get data from form
-
     // Check if data is valid
+    const validInputs = (...inputs) =>
+      inputs.every(inp => Number.isFinite(inp));
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
 
     // if workout is running, create a running oject
     if (type === 'running') {
@@ -189,6 +188,7 @@ class App {
       )
         return alert('Inputs have to be positive number');
 
+      // Creating the workout based of the input
       workout = new Running([lat, lng], distance, duration, cadence);
     }
 
@@ -201,6 +201,8 @@ class App {
         !allPositive(distance, duration)
       )
         return alert('Inputs have to be positive number');
+
+      // Creating the workout based of the input
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
 
@@ -210,7 +212,7 @@ class App {
 
     // Render the workout on map as a marker
     this._renderWorkoutMarker(workout);
-    // When the form is submitted we wan to display the marker
+    // When the form is submitted we want to display the marker
 
     // Render the workout on list
     this._renderWorkout(workout);
@@ -336,6 +338,7 @@ class App {
 
   reset() {
     localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 
